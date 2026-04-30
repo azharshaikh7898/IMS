@@ -12,56 +12,7 @@ Production-grade Incident Management System (IMS) for high-throughput signal ing
 
 ## Architecture
 
-```mermaid
-flowchart TB
-  subgraph CLIENT[CLIENT LAYER]
-    UI[React Frontend<br/>(Dashboard UI)]
-    FE1[Live Incident Feed]
-    FE2[Incident Detail View]
-    FE3[RCA Form]
-    UI --> FE1
-    UI --> FE2
-    UI --> FE3
-  end
-
-  subgraph API[API LAYER]
-    ING[Signal Ingestion API<br/>Rate Limiter]
-    INC[Incident APIs<br/>(listing/details)]
-    RCA[RCA Submission Endpoint]
-    WS[WebSocket Server]
-  end
-
-  subgraph PROC[INGESTION & PROCESSING]
-    Q[Redis Streams Queue]
-    WK[Worker Service<br/>(Consumer)]
-    DBL[Debouncing Logic<br/>10s window]
-    WK --> DBL
-    Q --> WK
-  end
-
-  subgraph STORE[STORAGE LAYER]
-    MONGO[MongoDB<br/>Raw Signals]
-    PG[PostgreSQL<br/>Incidents + RCA]
-    REDIS[Redis Cache<br/>Dashboard State]
-  end
-
-  subgraph OBS[OBSERVABILITY]
-    HEALTH[/health/]
-    LOGS[Logging / Metrics]
-  end
-
-  SOURCES[Signal Sources] --> ING
-  ING --> Q
-  ING --> MONGO
-  WK --> PG
-  WK --> REDIS
-  INC --> PG
-  RCA --> PG
-  WS <--> UI
-  REDIS --> WS
-  HEALTH --- API
-  LOGS --- OBS
-```
+![IMS architecture diagram](docs/architecture-diagram.svg)
 
 ### Core Flow
 
