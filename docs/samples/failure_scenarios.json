@@ -1,0 +1,50 @@
+{
+  "rdbms_failure_p0": [
+    {
+      "component_id": "payments-api",
+      "severity": "P0",
+      "source": "synthetic",
+      "summary": "Primary PostgreSQL pool exhausted",
+      "payload": {"error": "connection refused", "region": "us-east-1"}
+    },
+    {
+      "component_id": "payments-api",
+      "severity": "P0",
+      "source": "synthetic",
+      "summary": "Transaction timeouts are increasing",
+      "payload": {"latency_ms": 12000}
+    }
+  ],
+  "cache_failure_p2": [
+    {
+      "component_id": "dashboard-api",
+      "severity": "P2",
+      "source": "synthetic",
+      "summary": "Redis cache miss ratio increased",
+      "payload": {"hit_ratio": 0.61}
+    }
+  ],
+  "burst_signals": [
+    {
+      "component_id": "checkout-api",
+      "severity": "P1",
+      "source": "load-generator",
+      "summary": "5xx burst detected",
+      "payload": {"rate_per_second": 250}
+    },
+    {
+      "component_id": "checkout-api",
+      "severity": "P1",
+      "source": "load-generator",
+      "summary": "5xx burst detected",
+      "payload": {"rate_per_second": 260}
+    },
+    {
+      "component_id": "checkout-api",
+      "severity": "P1",
+      "source": "load-generator",
+      "summary": "5xx burst detected",
+      "payload": {"rate_per_second": 275}
+    }
+  ]
+}

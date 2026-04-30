@@ -1,0 +1,67 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ims
+      POSTGRES_USER: ims
+      POSTGRES_PASSWORD: ims
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  mongo:
+    image: mongo:7
+    volumes:
+      - mongo_data:/data/db
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      APP_NAME: Incident Management System
+      ENVIRONMENT: production
+      POSTGRES_DSN: postgresql+asyncpg://ims:ims@postgres:5432/ims
+      MONGO_DSN: mongodb://mongo:27017
+      MONGO_DB_NAME: ims
+      REDIS_DSN: redis://redis:6379/0
+      SIGNAL_DEBOUNCE_SECONDS: 10
+      RATE_LIMIT_PER_MINUTE: 1200
+    depends_on:
+      - postgres
+      - mongo
+      - redis
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+  worker:
+    build:
+      context: ./backend
+    environment:
+      APP_NAME: Incident Management System
+      ENVIRONMENT: production
+      POSTGRES_DSN: postgresql+asyncpg://ims:ims@postgres:5432/ims
+      MONGO_DSN: mongodb://mongo:27017
+      MONGO_DB_NAME: ims
+      REDIS_DSN: redis://redis:6379/0
+      SIGNAL_DEBOUNCE_SECONDS: 10
+      RATE_LIMIT_PER_MINUTE: 1200
+    depends_on:
+      - backend
+      - postgres
+      - mongo
+      - redis
+    command: ["python", "-m", "app.worker"]
+
+  frontend:
+    build:
+      context: ./frontend
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+  mongo_data:
+  redis_data:
