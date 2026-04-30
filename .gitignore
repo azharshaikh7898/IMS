@@ -1,0 +1,10 @@
+# Ignore runtime artifacts and editor/temp files
+# Runtime logs and pid files
+*.log
+*.pid
+
+# Python virtualenv
+.venv/
+
+# VSCode workspace storage
+.vscode/
