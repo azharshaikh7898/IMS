@@ -45,6 +45,16 @@ Services:
 - MongoDB: localhost:27017
 - Redis: localhost:6379
 
+## Proof of Running
+
+Captured from the local deployment on `127.0.0.1:5173`.
+
+![Health endpoint](docs/screenshots/health.png)
+
+![Dashboard](docs/screenshots/dashboard.png)
+
+![Incident detail](docs/screenshots/incident-detail.png)
+
 ## Local Development
 
 1. Start PostgreSQL, MongoDB, and Redis on your machine using the same ports as above.
